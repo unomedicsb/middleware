@@ -161,6 +161,7 @@ export async function submitQuickReg(data, sessionCookie) {
  * @param {string} options.time - Appointment time
  * @param {string} options.date - Appointment date
  * @param {string} options.remarks - Optional remarks
+ * @param {string} options.service - Required service
  * @param {string|null} options.sessionCookie - Optional session cookie
  * @returns {Promise<string|object>} Server reply
  */
@@ -176,12 +177,29 @@ export async function quickRegister({
   time,
   date,
   remarks,
+  service,
   sessionCookie = null
 }) {
-  // Format the appointment reason
-  let reasv = `Appointment with Dr. ${doctor} at ${time} on ${date}`;
+  // Create shorter doctor code
+  const doctorShort = doctor.replace('Dr. ', 'Dr ').replace('Dr ', 'Dr');
+  
+  // Format the appointment reason with 100 char limit
+  let reasv = `Appt ${doctorShort} ${time} ${date} - ${service}`;
+  
+  // Add remarks if provided, ensuring total length doesn't exceed 100 chars
   if (remarks) {
-    reasv += `\n${remarks}`;
+    const remainingChars = 100 - reasv.length - 1; // -1 for newline
+    if (remainingChars > 0) {
+      const truncatedRemarks = remarks.length > remainingChars 
+        ? remarks.substring(0, remainingChars - 3) + '...' 
+        : remarks;
+      reasv += `\n${truncatedRemarks}`;
+    }
+  }
+  
+  // Final check to ensure we don't exceed 100 chars
+  if (reasv.length > 100) {
+    reasv = reasv.substring(0, 97) + '...';
   }
   
   const formData = {

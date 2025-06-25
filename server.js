@@ -27,17 +27,29 @@ app.post('/api/book-appointment', async (req, res) => {
       doctor,
       time,
       date,
-      remarks
+      remarks,
+      service
     } = req.body;
 
     // Validate required fields (remarks is optional)
-    const requiredFields = ['name', 'nric', 'tel', 'dob', 'sex', 'email', 'alamat', 'doctor', 'time', 'date'];
+    const requiredFields = ['name', 'nric', 'tel', 'dob', 'sex', 'email', 'alamat', 'doctor', 'time', 'date', 'service'];
     const missingFields = requiredFields.filter(field => !req.body[field]);
     if (missingFields.length > 0) {
       return res.status(400).json({
         success: false,
         error: 'Missing required fields',
         missingFields
+      });
+    }
+
+    // Validate service field
+    const validServices = ['consultation', 'surgery', 'home visit', 'blood taking'];
+    if (!validServices.includes(service)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid service',
+        message: `Service must be one of: ${validServices.join(', ')}`,
+        validServices
       });
     }
 
@@ -53,7 +65,8 @@ app.post('/api/book-appointment', async (req, res) => {
       doctor,
       time,
       date,
-      remarks
+      remarks,
+      service
     });
 
     console.log('✅ Appointment booked successfully:', result);
