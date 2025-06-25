@@ -1,0 +1,31 @@
+{
+  "name": "klinik-kenanga-api",
+  "version": "1.0.0",
+  "description": "API server for Klinik Kenanga appointment booking",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'No build step required'",
+    "test": "echo 'No tests specified'"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "node-fetch": "^3.3.2",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "api",
+    "appointment",
+    "booking",
+    "klinik",
+    "kenanga"
+  ],
+  "author": "Klinik Kenanga",
+  "license": "MIT"
+} 
