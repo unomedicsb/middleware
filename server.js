@@ -9,9 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors({
-  origin: ['https://kenanga.clinic', 'http://localhost:3000']
-}));
+app.use(cors());
 app.use(express.json());
 
 // Appointment booking endpoint (quick registration only)
